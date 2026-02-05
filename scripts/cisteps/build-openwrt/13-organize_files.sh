@@ -13,4 +13,4 @@ if [ "x${OPT_PACKAGE_ONLY}" != "x1" ]; then
   # shellcheck disable=SC2015
   [ ${#all_firmware_files[@]} -gt 0 ] && mv "${all_firmware_files[@]}" "${HOST_WORK_DIR}/openwrt_firmware/" || true
 fi
-echo "::set-output name=status::success"
+echo "status=success" >> $GITHUB_OUTPUT

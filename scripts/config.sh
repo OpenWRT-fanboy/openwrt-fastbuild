@@ -18,4 +18,5 @@ fi
 
 cd "${OPENWRT_CUR_DIR}"
 make defconfig
-make oldconfig
+# Merge cvn.config so that BUILD_TARGET is part of the name
+cat cvn.config >> .config

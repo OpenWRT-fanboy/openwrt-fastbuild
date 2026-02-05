@@ -24,6 +24,7 @@ if [ "x${TEST}" = "x1" ]; then
 fi
 
 cp "${BUILDER_PROFILE_DIR}/config.diff" "${OPENWRT_CUR_DIR}/.config"
+cp "${BUILDER_PROFILE_DIR}/cvn.config" "${OPENWRT_CUR_DIR}/cvn.config"
 
 echo "Applying patches..."
 if [ -n "$(ls -A "${BUILDER_PROFILE_DIR}/patches" 2>/dev/null)" ]; then
@@ -58,10 +59,10 @@ while IFS= read -r line; do
 done <<< "${SYNC_EXCLUDES}"
 
 echo "Copying base files..."
-if [ -n "$(ls -A "${BUILDER_PROFILE_DIR}/files" 2>/dev/null)" ]; then
-  # feeds.conf is handled in update_feeds.sh
-  rsync -camv --no-t "${sync_exclude_opts[@]}" --exclude="/feeds.conf" --exclude="/.config" \
-    "${BUILDER_PROFILE_DIR}/files/" "${OPENWRT_CUR_DIR}/"
+if [ -e ${BUILDER_PROFILE_DIR}/files ]; then
+  (
+    cp -r ${BUILDER_PROFILE_DIR}/files/ ${OPENWRT_CUR_DIR}/
+  )
 fi
 
 echo "Executing custom.sh"

@@ -6,7 +6,7 @@ set -eo pipefail
 source "${HOST_WORK_DIR}/scripts/host/docker.sh"
 
 docker_exec "${BUILDER_CONTAINER_ID}" "${BUILDER_WORK_DIR}/scripts/pre_commit.sh"
-docker commit -a "tete1030/openwrt-fastbuild-actions" -m "Building at $(date)" "${BUILDER_CONTAINER_ID}" "${BUILDER_IMAGE_ID_INC}"
+docker commit -a "openwrtfanboy/openwrt-fastbuild" -m "Building at $(date)" "${BUILDER_CONTAINER_ID}" "${BUILDER_IMAGE_ID_INC}"
 docker container rm -fv "${BUILDER_CONTAINER_ID}"
 docker container prune -f
 docker system prune -f --volumes

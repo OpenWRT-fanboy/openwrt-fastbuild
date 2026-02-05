@@ -1,18 +1,9 @@
 #!/bin/bash
 # shellcheck disable=SC2034
 
-install_commands() {
-  echo "Installing necessary commands..."
-  export DEBIAN_FRONTEND=noninteractive
-
-  sudo -E apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
-  sudo -E add-apt-repository -y ppa:rmescandon/yq
-  sudo -E apt-get -qq update && sudo -E apt-get -qq install jq yq tree
-}
-
 setup_envs() {
   # Do not change
-  BUILDER_IMAGE_ID_BUILDENV="tete1030/openwrt-buildenv:latest"
+  BUILDER_IMAGE_ID_BUILDENV="openwrtfanboy/openwrt_builder:latest"
   BUILDER_CONTAINER_ID="builder"
   BUILDER_WORK_DIR="/home/builder"
   BUILDER_TMP_DIR="/tmp/builder"
@@ -89,6 +80,8 @@ prepare_target() {
     mkdir "${HOST_WORK_DIR}/user/current"
   fi
   rsync -aI "${HOST_WORK_DIR}/user/${BUILD_TARGET}/" "${HOST_WORK_DIR}/user/current/"
+  # Creating cvn.config
+  echo CONFIG_VERSION_NUMBER=${BUILD_TARGET}-SNAPSHOT > "${HOST_WORK_DIR}/user/current/cvn.config"
   echo "Merged target profile structure:"
   tree "${HOST_WORK_DIR}/user/current"
 
@@ -148,7 +141,7 @@ check_validity() {
 prepare_dirs() {
   mkdir -p "${HOST_BIN_DIR}"
   chmod 777 "${HOST_BIN_DIR}"
-  sudo mkdir "${HOST_TMP_DIR}"
+  sudo mkdir -p "${HOST_TMP_DIR}"
   sudo chmod 777 "${HOST_TMP_DIR}"
 }
 
@@ -158,7 +151,6 @@ main() {
     BUILD_OPTS="update_feeds update_repo rebase rebuild debug push_when_fail package_only"
   fi
 
-  install_commands
   setup_envs
   check_test
   load_task

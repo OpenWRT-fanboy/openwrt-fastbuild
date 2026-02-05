@@ -7,9 +7,23 @@ set +eo pipefail
 export DEBIAN_FRONTEND=noninteractive
 
 echo "Deleting files, please wait ..."
-sudo rm -rf /usr/share/dotnet /etc/apt/sources.list.d/* /var/cache/apt/archives /usr/local/share/boost /usr/local/go* /usr/local/lib/android /opt/ghc
-sudo swapoff /swapfile
-sudo rm -f /swapfile
+sudo rm -rf \
+  "$AGENT_TOOLSDIRECTORY" \
+  /opt/ghc \
+  /opt/google/chrome \
+  /opt/microsoft/msedge \
+  /opt/microsoft/powershell \
+  /opt/pipx \
+  /usr/lib/jvm \
+  /usr/lib/mono \
+  /usr/local/.ghcup \
+  /usr/local/julia* \
+  /usr/local/lib/android \
+  /usr/local/lib/node_modules \
+  /usr/local/share/chromium \
+  /usr/local/share/powershell \
+  /usr/share/dotnet \
+  /usr/share/swift
 docker rmi "$(docker images -q)"
-sudo -E apt-get -q purge azure-cli zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql*
+df -h
 exit 0

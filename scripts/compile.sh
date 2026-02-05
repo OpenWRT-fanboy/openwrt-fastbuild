@@ -25,10 +25,13 @@ compile() {
     if [ "x${MODE}" = "xm" ]; then
       local nthread=$(($(nproc) + 1)) 
       echo "${nthread} thread compile: $*"
+      export FORCE_UNSAFE_CONFIGURE=1
       make -j${nthread} "$@"
     elif [ "x${MODE}" = "xs" ]; then
-      echo "Fallback to single thread compile: $*"
-      make -j1 V=s "$@"
+      local nthread=$(($(nproc) + 1)) 
+      echo "${nthread} thread compile: $*"
+       export FORCE_UNSAFE_CONFIGURE=1
+      make -j${nthread} V=s "$@"
     else
       echo "No MODE specified" >&2
       exit 1

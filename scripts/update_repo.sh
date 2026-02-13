@@ -57,7 +57,14 @@ if [ "x${OPENWRT_CUR_DIR}" != "x${OPENWRT_COMPILE_DIR}" ] && [ -d "${OPENWRT_COM
   mkdir -p "${OPENWRT_CUR_DIR}"
   cd "${OPENWRT_CUR_DIR}"
   git init
-  git remote set-url origin "${REPO_URL}"
+
+  if git remote get-url origin >/dev/null 2>&1; then
+    git remote set-url origin "${REPO_URL}"
+  else
+    git remote add origin "${REPO_URL}"
+  fi
+  
+  # git remote set-url origin "${REPO_URL}"
   git fetch
   git checkout "${REPO_BRANCH}"
   git pull --rebase

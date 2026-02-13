@@ -48,7 +48,7 @@ fi
 
 if [ "x${OPENWRT_CUR_DIR}" != "x${OPENWRT_COMPILE_DIR}" ] && [ -d "${OPENWRT_COMPILE_DIR}/.git" ] && [ "x${OPT_UPDATE_REPO}" != "x1" ]; then
   git clone "${OPENWRT_COMPILE_DIR}" "${OPENWRT_CUR_DIR}"
-  git -C "${OPENWRT_CUR_DIR}" remote set-url main "${REPO_URL}"
+  git -C "${OPENWRT_CUR_DIR}" remote set-url origin "${REPO_URL}"
   git -C "${OPENWRT_CUR_DIR}" fetch
   git -C "${OPENWRT_CUR_DIR}" checkout "${REPO_BRANCH}"
   git -C "${OPENWRT_CUR_DIR}" pull --rebase
@@ -57,7 +57,7 @@ if [ "x${OPENWRT_CUR_DIR}" != "x${OPENWRT_COMPILE_DIR}" ] && [ -d "${OPENWRT_COM
   mkdir -p "${OPENWRT_CUR_DIR}"
   cd "${OPENWRT_CUR_DIR}"
   git init
-  git remote set-url main "${REPO_URL}"
+  git remote set-url origin "${REPO_URL}"
   git fetch
   git checkout "${REPO_BRANCH}"
   git pull --rebase

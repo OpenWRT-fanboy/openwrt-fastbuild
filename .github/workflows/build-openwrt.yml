@@ -3,12 +3,14 @@
 # Description: FAST building OpenWrt with Github Actions and Docker!
 # Lisence: MIT
 # Author: Texot
-
 #=================================================
 
 name: Build OpenWrt
 
 on:
+  push:
+    branches:
+      - master 
   workflow_dispatch:
 
 env:
